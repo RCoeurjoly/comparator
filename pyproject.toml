@@ -7,6 +7,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+wildq = "^1.1.11"
+graphtage = "^0.2.6"
 
 
 [build-system]

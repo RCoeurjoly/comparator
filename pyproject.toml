@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "bme"
+name = "compara_cfg"
 version = "0.1.0"
 description = ""
 authors = ["Roland Coeurjoly <rolandcoeurjoly@gmail.com>"]
@@ -16,4 +16,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-bme = "bme:main"
+compara_cfg = "compara_cfg:main"

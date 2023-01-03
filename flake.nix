@@ -74,7 +74,7 @@
           '';
       };
       packages.x86_64-linux.default = pkgs.myapp;
-      apps.x86_64-linux.default = { type = "app"; program = "${self.packages.x86_64-linux.default}/bin/bme"; };
-      packages.x86_64-linux.bme_rpm = bundlers.bundlers.x86_64-linux.toRPM self.packages.x86_64-linux.compara_cfg;
+      apps.x86_64-linux.default = { type = "app"; program = "${self.packages.x86_64-linux.default}/bin/${my-name}"; };
+      packages.x86_64-linux.rpm = bundlers.bundlers.x86_64-linux.toRPM self.packages.x86_64-linux.default;
     };
 }

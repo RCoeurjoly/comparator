@@ -1,5 +1,5 @@
 {
-  description = "poetry2nix bundle";
+  description = "Compara cfgs";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
@@ -12,7 +12,6 @@
     bundlers = {
       url = "github:NixOS/bundlers";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
     };
   };
 
@@ -35,11 +34,10 @@
         );
 
       };
-      my-name = "my-script";
-      my-script = (pkgs.writeScriptBin my-name (builtins.readFile ./simple-script.sh)).overrideAttrs(old: {
+      my-name = "compara_cfg";
+      my-script = (pkgs.writeScriptBin my-name (builtins.readFile ./compara_cfg.sh)).overrideAttrs(old: {
         buildCommand = "${old.buildCommand}\n patchShebangs $out";
       });
-      packageName = "BME";
     in {
 
       # Nixpkgs overlay providing the application
@@ -64,7 +62,10 @@
 
         })
       ];
-      packages.x86_64-linux.my-script = pkgs.symlinkJoin {
+      devShells.x86_64-linux.default = pkgs.myAppEnv.env.overrideAttrs (oldAttrs: {
+        buildInputs = with pkgs; [ poetry ];
+      });
+      packages.x86_64-linux.compara_cfg = pkgs.symlinkJoin {
         name = my-name;
         paths = [ my-script self.packages.x86_64-linux.default ];
         buildInputs = [ pkgs.makeWrapper ];
@@ -73,10 +74,7 @@
           '';
       };
       packages.x86_64-linux.default = pkgs.myapp;
-      devShells.x86_64-linux.default = pkgs.myAppEnv.env.overrideAttrs (oldAttrs: {
-        buildInputs = with pkgs; [ poetry pkgs.geckodriver ];
-      });
       apps.x86_64-linux.default = { type = "app"; program = "${self.packages.x86_64-linux.default}/bin/bme"; };
-      packages.x86_64-linux.bme_rpm = bundlers.bundlers.x86_64-linux.toRPM self.packages.x86_64-linux.default;
+      packages.x86_64-linux.bme_rpm = bundlers.bundlers.x86_64-linux.toRPM self.apps.x86_64-linux.compara_cfg;
     };
 }

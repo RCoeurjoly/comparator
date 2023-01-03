@@ -49,7 +49,6 @@
             projectDir = ./.;
             overrides =
               [ prev.poetry2nix.defaultPoetryOverrides customOverrides ];
-            buildInputs = with pkgs; [ coreutils ];
           };
 
           myAppEnv = pkgs.poetry2nix.mkPoetryEnv {
@@ -59,7 +58,6 @@
             };
             overrides =
               [ pkgs.poetry2nix.defaultPoetryOverrides customOverrides ];
-            buildInputs = with pkgs; [ coreutils ];
           };
 
         })
@@ -67,22 +65,7 @@
       devShells.x86_64-linux.default = pkgs.myAppEnv.env.overrideAttrs (oldAttrs: {
         buildInputs = with pkgs; [ poetry ];
       });
-      packages.x86_64-linux.my_command = pkgs.writeShellApplication {
-  name = "compare_cfgs";
-
-  runtimeInputs = with pkgs; [ coreutils ] ++ [self.packages.x86_64-linux.default];
-
-  text = ''
-echo holaaaa
-which graphtage || echo no graphtage
-graphtage --version || echo no graphtage
-which wildq || echo no wildq
-wildq --version || echo no wildq
-which cat || echo no cat
-cat --version || echo no cat
-  '';
-};
-        packages.x86_64-linux.compara_cfg = pkgs.symlinkJoin {
+      packages.x86_64-linux.compara_cfg = pkgs.symlinkJoin {
         name = my-name;
         paths = [ my-script self.packages.x86_64-linux.default ];
         buildInputs = [ pkgs.makeWrapper ];

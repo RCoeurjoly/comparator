@@ -35,9 +35,6 @@
 
       };
       my-name = "compara_cfg";
-      my-script = (pkgs.writeScriptBin my-name (builtins.readFile ./compara_cfg.sh)).overrideAttrs(old: {
-        buildCommand = "${old.buildCommand}\n patchShebangs $out";
-      });
     in {
 
       # Nixpkgs overlay providing the application
@@ -67,7 +64,7 @@
       });
       packages.x86_64-linux.compara_cfg = pkgs.symlinkJoin {
         name = my-name;
-        paths = [ my-script self.packages.x86_64-linux.default ];
+        paths = [ self.packages.x86_64-linux.default ];
         buildInputs = [ pkgs.makeWrapper ];
         postBuild = ''
                   wrapProgram $out/bin/${my-name} --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.coreutils self.packages.x86_64-linux.default ]}

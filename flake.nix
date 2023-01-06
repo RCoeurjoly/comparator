@@ -34,7 +34,7 @@
         );
 
       };
-      my-name = "compara_cfg";
+      my-name = "comparator";
     in {
 
       # Nixpkgs overlay providing the application
@@ -60,9 +60,9 @@
         })
       ];
       devShells.x86_64-linux.default = pkgs.myAppEnv.env.overrideAttrs (oldAttrs: {
-        buildInputs = with pkgs; [ poetry ];
+        buildInputs = with pkgs; [ poetry jq ];
       });
-      packages.x86_64-linux.compara_cfg = pkgs.symlinkJoin {
+      packages.x86_64-linux.comparator = pkgs.symlinkJoin {
         name = my-name;
         paths = [ self.packages.x86_64-linux.default ];
         buildInputs = [ pkgs.makeWrapper ];
@@ -72,6 +72,6 @@
       };
       packages.x86_64-linux.default = pkgs.myapp;
       apps.x86_64-linux.default = { type = "app"; program = "${self.packages.x86_64-linux.default}/bin/${my-name}"; };
-      packages.x86_64-linux.rpm = bundlers.bundlers.x86_64-linux.toRPM self.packages.x86_64-linux.compara_cfg;
+      packages.x86_64-linux.rpm = bundlers.bundlers.x86_64-linux.toRPM self.packages.x86_64-linux.comparator;
     };
 }

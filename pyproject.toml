@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "compara_cfg"
+name = "comparator"
 version = "0.1.0"
 description = ""
 authors = ["Roland Coeurjoly <rolandcoeurjoly@gmail.com>"]
@@ -16,4 +16,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-compara_cfg = "compara_cfg:main"
+comparator = "comparator:main"
